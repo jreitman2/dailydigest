@@ -1,0 +1,5 @@
+.env
+node_modules/
+raw_posts.json
+competitive_digest.md
+producthunt_digest.log 

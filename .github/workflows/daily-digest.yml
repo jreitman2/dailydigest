@@ -1,0 +1,30 @@
+name: Daily Product Hunt Digest
+
+on:
+  schedule:
+    - cron: '0 13 * * *'  # 8:00 AM EST (13:00 UTC)
+  workflow_dispatch:  # Allows manual triggering
+
+jobs:
+  generate-digest:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        
+    - name: Install dependencies
+      run: npm install
+      
+    - name: Run digest script
+      env:
+        PRODUCT_HUNT_API_KEY: ${{ secrets.PRODUCT_HUNT_API_KEY }}
+        PRODUCT_HUNT_CLIENT_SECRET: ${{ secrets.PRODUCT_HUNT_CLIENT_SECRET }}
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
+      run: node index.js 
