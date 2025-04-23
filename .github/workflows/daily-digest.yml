@@ -20,6 +20,17 @@ jobs:
     - name: Install dependencies
       run: npm install
       
+    - name: Debug Environment
+      run: |
+        echo "Checking environment variables (masked):"
+        echo "PRODUCT_HUNT_API_KEY exists: ${{ secrets.PRODUCT_HUNT_API_KEY != '' }}"
+        echo "PRODUCT_HUNT_CLIENT_SECRET exists: ${{ secrets.PRODUCT_HUNT_CLIENT_SECRET != '' }}"
+        echo "OPENAI_API_KEY exists: ${{ secrets.OPENAI_API_KEY != '' }}"
+        echo "SLACK_BOT_TOKEN exists: ${{ secrets.SLACK_BOT_TOKEN != '' }}"
+        echo "SLACK_CHANNEL_ID exists: ${{ secrets.SLACK_CHANNEL_ID != '' }}"
+        echo "Current directory contents:"
+        ls -la
+        
     - name: Run digest script
       env:
         PRODUCT_HUNT_API_KEY: ${{ secrets.PRODUCT_HUNT_API_KEY }}
@@ -27,4 +38,10 @@ jobs:
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
-      run: node index.js 
+      run: |
+        echo "Starting digest script..."
+        node index.js
+        echo "Script completed. Checking output files:"
+        ls -la
+        echo "Digest content:"
+        cat competitive_digest.md 
